@@ -1,1 +1,19 @@
 This is to show how this works
+CivicEye/
+│
+├── index.html
+├── report.html
+├── dashboard.html
+├── map.html
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   ├── main.js
+│   ├── report.js
+│   ├── dashboard.js
+│   └── firebase.js
+│
+└── assets/
+    └── images/
