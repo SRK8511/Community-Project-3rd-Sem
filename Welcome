@@ -10,10 +10,11 @@ CivicEye/
 │   └── style.css
 │
 ├── js/
+│   ├── firebase.js
 │   ├── main.js
 │   ├── report.js
 │   ├── dashboard.js
-│   └── firebase.js
+│   └── map.js
 │
 └── assets/
     └── images/
