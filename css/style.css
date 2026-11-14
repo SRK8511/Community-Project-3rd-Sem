@@ -637,3 +637,46 @@ body {
   .stats { grid-template-columns: 1fr; }
   .footer-content { grid-template-columns: 1fr; }
 }
+
+/* =========================================
+   CIVICEYE NAVBAR THEME
+   ========================================= */
+
+.navbar {
+    background: #0f172a;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.nav-menu a {
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #60a5fa;
+}
+
+.nav-buttons .btn {
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+}
+
+.nav-buttons .btn:hover {
+    background: #1d4ed8;
+}
+
+/* Mobile navbar adjustment */
+@media (max-width: 600px) {
+    .nav-inner {
+        flex-wrap: wrap;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+}
