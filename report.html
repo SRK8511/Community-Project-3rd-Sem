@@ -7,6 +7,52 @@
 
         <form id="reportForm">
 
+            <!-- Automatic Report ID -->
+            <div class="form-group">
+                <label for="reportId">Report ID</label>
+                <input
+                    type="text"
+                    id="reportId"
+                    name="reportId"
+                    placeholder="Generated automatically after submission"
+                    readonly
+                >
+            </div>
+
+            <!-- Contact Information -->
+            <h3>Contact Information</h3>
+
+            <div class="form-group">
+                <label for="reporterName">Your Name (Optional)</label>
+                <input
+                    type="text"
+                    id="reporterName"
+                    name="reporterName"
+                    placeholder="Enter your name"
+                    maxlength="100"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address (Optional)</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number (Optional)</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                >
+            </div>
+
             <!-- Issue Title -->
             <div class="form-group">
                 <label for="title">Issue Title</label>
@@ -15,6 +61,7 @@
                     id="title"
                     name="title"
                     placeholder="Example: Pothole on Main Road"
+                    maxlength="100"
                     required
                 >
             </div>
@@ -22,6 +69,7 @@
             <!-- Category -->
             <div class="form-group">
                 <label for="category">Select Category</label>
+
                 <select id="category" name="category" required>
                     <option value="">Choose a category</option>
                     <option value="Road Damage">Road Damage</option>
@@ -29,38 +77,196 @@
                     <option value="Water Leakage">Water Leakage</option>
                     <option value="Street Lights">Street Lights</option>
                     <option value="Drainage">Drainage</option>
+                    <option value="Public Safety">Public Safety</option>
                     <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Responsible Department -->
+            <div class="form-group">
+                <label for="department">Responsible Department</label>
+
+                <select id="department" name="department" required>
+                    <option value="">Select department</option>
+                    <option value="Road Maintenance Department">
+                        Road Maintenance Department
+                    </option>
+                    <option value="Sanitation Department">
+                        Sanitation Department
+                    </option>
+                    <option value="Water Supply Department">
+                        Water Supply Department
+                    </option>
+                    <option value="Electricity Department">
+                        Electricity Department
+                    </option>
+                    <option value="Drainage Department">
+                        Drainage Department
+                    </option>
+                    <option value="Public Safety Department">
+                        Public Safety Department
+                    </option>
+                    <option value="Other Department">
+                        Other Department
+                    </option>
                 </select>
             </div>
 
             <!-- Description -->
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description">Issue Description</label>
+
                 <textarea
                     id="description"
                     name="description"
                     rows="5"
-                    placeholder="Describe the issue and its location..."
+                    maxlength="1000"
+                    placeholder="Describe the issue in detail..."
                     required
                 ></textarea>
+
+                <small>Maximum 1000 characters.</small>
             </div>
 
-            <!-- Photo Upload -->
+            <!-- Issue Location -->
             <div class="form-group">
-                <label for="photo">Upload Photo</label>
+
+                <label for="location">Issue Location</label>
+
                 <input
-                    type="file"
-                    id="photo"
-                    name="photo"
-                    accept="image/*"
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Enter street, area or landmark"
+                    required
+                >
+
+                <!-- Select Location on Map -->
+                <button
+                    type="button"
+                    id="selectMapLocation"
+                    class="btn"
+                >
+                    Select Location on Map
+                </button>
+
+                <!-- Hidden Coordinates -->
+                <input
+                    type="hidden"
+                    id="latitude"
+                    name="latitude"
+                >
+
+                <input
+                    type="hidden"
+                    id="longitude"
+                    name="longitude"
+                >
+
+                <p id="selectedLocation">
+                    No location selected yet.
+                </p>
+
+            </div>
+
+            <!-- Date and Time -->
+            <div class="form-group">
+                <label for="issueDate">Date of Issue</label>
+
+                <input
+                    type="date"
+                    id="issueDate"
+                    name="issueDate"
                     required
                 >
             </div>
 
-            <!-- Submit -->
-            <button type="submit" class="btn">
-                Submit Report
-            </button>
+            <div class="form-group">
+                <label for="issueTime">Time of Issue</label>
+
+                <input
+                    type="time"
+                    id="issueTime"
+                    name="issueTime"
+                    required
+                >
+            </div>
+
+            <!-- Urgency Level -->
+            <div class="form-group">
+                <label for="urgency">Urgency Level</label>
+
+                <select id="urgency" name="urgency" required>
+                    <option value="">Select urgency</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <!-- Multiple Photo Upload -->
+            <div class="form-group">
+                <label for="photo">Upload Issue Photos</label>
+
+                <input
+                    type="file"
+                    id="photo"
+                    name="photo"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    required
+                >
+
+                <small>
+                    You can select multiple JPG, PNG or WebP images.
+                </small>
+
+                <!-- Photo Preview Area -->
+                <div
+                    id="photoPreview"
+                    class="photo-preview-container"
+                ></div>
+            </div>
+
+            <!-- Anonymous Reporting -->
+            <div class="form-group">
+                <label>
+                    <input
+                        type="checkbox"
+                        id="anonymous"
+                        name="anonymous"
+                    >
+                    Submit this report anonymously
+                </label>
+            </div>
+
+            <!-- Confirmation -->
+            <div class="form-group">
+                <label>
+                    <input
+                        type="checkbox"
+                        id="confirmation"
+                        name="confirmation"
+                        required
+                    >
+                    I confirm that the information provided
+                    in this report is accurate to the best
+                    of my knowledge.
+                </label>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="form-buttons">
+
+                <button type="reset" class="btn">
+                    Reset Form
+                </button>
+
+                <button type="submit" class="btn">
+                    Submit Report
+                </button>
+
+            </div>
 
         </form>
 
