@@ -1,0 +1,68 @@
+
+<section class="report-section">
+    <div class="report-container">
+
+        <h1>Report a Civic Issue</h1>
+        <p>Help make your community better by reporting local problems.</p>
+
+        <form id="reportForm">
+
+            <!-- Issue Title -->
+            <div class="form-group">
+                <label for="title">Issue Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Example: Pothole on Main Road"
+                    required
+                >
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+                <label for="category">Select Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Choose a category</option>
+                    <option value="Road Damage">Road Damage</option>
+                    <option value="Garbage">Garbage</option>
+                    <option value="Water Leakage">Water Leakage</option>
+                    <option value="Street Lights">Street Lights</option>
+                    <option value="Drainage">Drainage</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe the issue and its location..."
+                    required
+                ></textarea>
+            </div>
+
+            <!-- Photo Upload -->
+            <div class="form-group">
+                <label for="photo">Upload Photo</label>
+                <input
+                    type="file"
+                    id="photo"
+                    name="photo"
+                    accept="image/*"
+                    required
+                >
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn">
+                Submit Report
+            </button>
+
+        </form>
+
+    </div>
+</section>
