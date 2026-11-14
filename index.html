@@ -2,391 +2,304 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CivicEye helps citizens report civic issues and improve their communities.">
+  <title>CivicEye | Make Your City Better</title>
 
-    <meta name="description"
-        content="CivicEye helps citizens report civic issues and improve their communities.">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <title>CivicEye | Make Your City Better</title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <header class="navbar">
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏙️</span>
+        <span>Civic<span class="highlight">Eye</span></span>
+      </a>
 
-        <div class="logo">
-            <span class="logo-icon">🏙️</span>
-            <span>Civic<span class="highlight">Eye</span></span>
+      <nav class="nav-menu">
+        <a href="index.html" class="active">Home</a>
+        <a href="report.html">Report Issue</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="map.html">Explore Map</a>
+      </nav>
+
+      <div class="nav-buttons">
+        <a href="report.html" class="btn btn-primary">+ Report Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="section-wrapper hero-grid">
+        
+        <div class="hero-content">
+          <span class="tagline">✨ Building Better Communities Together</span>
+
+          <h1>
+            See an Issue?<br>
+            <span class="highlight-gradient">Report It. Resolve It.</span>
+          </h1>
+
+          <p>
+            Your neighbourhood deserves better. Report potholes, uncollected garbage,
+            water leakage, and broken streetlights in seconds. Together, we can make
+            our city cleaner, safer, and smarter.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="report.html" class="btn btn-primary btn-lg">Report an Issue →</a>
+            <a href="map.html" class="btn btn-secondary btn-lg">Explore Live Map</a>
+          </div>
+
+          <div class="hero-note">
+            <span>🌍 Your Voice. Your City. Your Responsibility.</span>
+          </div>
         </div>
 
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="report.html">Report Issue</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="map.html">Explore Map</a>
-        </nav>
-
-        <div class="nav-buttons">
-            <a href="report.html" class="btn btn-primary">
-                + Report Issue
-            </a>
+        <div class="hero-image">
+          <div class="hero-image-frame">
+            <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900" alt="City neighbourhood">
+            <!-- Floating UI Trust Badges -->
+            <div class="floating-card floating-top">
+              <span class="floating-dot pending-dot"></span>
+              <div>
+                <strong>Pothole Reported</strong>
+                <small>Banashankari • 14 Upvotes</small>
+              </div>
+            </div>
+            <div class="floating-card floating-bottom">
+              <span class="floating-dot resolved-dot"></span>
+              <div>
+                <strong>Issue Resolved ✓</strong>
+                <small>Streetlight Fixed • 80 Ft Rd</small>
+              </div>
+            </div>
+          </div>
         </div>
 
-    </header>
-
-
-    <main>
-
-        <!-- HERO SECTION -->
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <span class="tagline">
-                    ✨ Building Better Communities Together
-                </span>
-
-                <h1>
-                    See an Issue?<br>
-                    <span class="highlight">Report It. Resolve It.</span>
-                </h1>
-
-                <p>
-                    Your neighbourhood deserves better.
-                    Report potholes, garbage, water leakage
-                    and other civic problems. Together,
-                    we can make our city cleaner, safer
-                    and smarter.
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a href="report.html" class="btn btn-primary">
-                        Report an Issue →
-                    </a>
-
-                    <a href="map.html" class="btn btn-secondary">
-                        Explore Issues
-                    </a>
-
-                </div>
-
-                <div class="hero-note">
-                    🌍 Your Voice. Your City. Your Responsibility.
-                </div>
-
-            </div>
-
-            <div class="hero-image">
-
-                <img
-                    src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900"
-                    alt="City neighbourhood">
-
-            </div>
-
-        </section>
-
-
-        <!-- STATISTICS -->
-        <section class="stats">
-
-            <div class="stat-card">
-                <h2>0</h2>
-                <p>Total Reports</p>
-            </div>
-
-            <div class="stat-card">
-                <h2>0</h2>
-                <p>Issues Resolved</p>
-            </div>
-
-            <div class="stat-card">
-                <h2>0</h2>
-                <p>Active Issues</p>
-            </div>
-
-            <div class="stat-card">
-                <h2>0</h2>
-                <p>Community Members</p>
-            </div>
-
-        </section>
-
-
-        <!-- ISSUE CATEGORIES -->
-        <section class="issue-categories">
-
-            <div class="section-heading">
-
-                <span class="tagline">IDENTIFY THE PROBLEM</span>
-
-                <h2>What Issues Can You Report?</h2>
-
-                <p>
-                    Help improve your neighbourhood by reporting
-                    common civic problems.
-                </p>
-
-            </div>
-
-            <div class="categories-container">
-
-                <article class="category-card">
-                    <div class="category-icon">🛣️</div>
-                    <h3>Road Damage</h3>
-                    <p>Report potholes, damaged roads and unsafe streets.</p>
-                </article>
-
-                <article class="category-card">
-                    <div class="category-icon">🗑️</div>
-                    <h3>Garbage Issues</h3>
-                    <p>Report overflowing bins and improper waste disposal.</p>
-                </article>
-
-                <article class="category-card">
-                    <div class="category-icon">💧</div>
-                    <h3>Water Problems</h3>
-                    <p>Report water leakage and drainage problems.</p>
-                </article>
-
-                <article class="category-card">
-                    <div class="category-icon">💡</div>
-                    <h3>Streetlights</h3>
-                    <p>Report broken streetlights and dark public areas.</p>
-                </article>
-
-                <article class="category-card">
-                    <div class="category-icon">🚧</div>
-                    <h3>Public Safety</h3>
-                    <p>Highlight damaged public infrastructure and hazards.</p>
-                </article>
-
-                <article class="category-card">
-                    <div class="category-icon">🌳</div>
-                    <h3>Public Spaces</h3>
-                    <p>Report damaged parks and neglected public spaces.</p>
-                </article>
-
-            </div>
-
-            <div class="center-button">
-                <a href="report.html" class="btn btn-primary">
-                    Report a Problem →
-                </a>
-            </div>
-
-        </section>
-
-
-        <!-- ABOUT -->
-        <section class="about" id="about">
-
-            <div class="section-heading">
-
-                <span class="tagline">ABOUT CIVICEYE</span>
-
-                <h2>Making Every Voice Count</h2>
-
-                <p>
-                    CivicEye connects citizens with their communities
-                    through a simple platform to report, monitor
-                    and resolve local civic issues.
-
-                    Our goal is to encourage community participation
-                    and make civic problem reporting more transparent,
-                    accessible and effective.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- FEATURES -->
-        <section class="features" id="features">
-
-            <div class="section-heading">
-
-                <span class="tagline">WHAT YOU CAN DO</span>
-
-                <h2>Making Civic Reporting Easy</h2>
-
-                <p>
-                    Everything you need to make your neighbourhood
-                    a better place.
-                </p>
-
-            </div>
-
-            <div class="feature-container">
-
-                <article class="feature-card">
-                    <div class="feature-icon">📸</div>
-                    <h3>Report Issues</h3>
-                    <p>
-                        Upload photographs and report potholes,
-                        garbage, drainage and other local problems.
-                    </p>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon">📍</div>
-                    <h3>Location Tracking</h3>
-                    <p>
-                        Identify the location of civic problems
-                        and explore issues around your neighbourhood.
-                    </p>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon">👍</div>
-                    <h3>Community Support</h3>
-                    <p>
-                        Support existing reports by voting and help
-                        bring important problems to attention.
-                    </p>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Track Progress</h3>
-                    <p>
-                        Monitor complaint status and stay updated
-                        until the reported problem is resolved.
-                    </p>
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- HOW IT WORKS -->
-        <section class="how-it-works" id="how-it-works">
-
-            <div class="section-heading">
-
-                <span class="tagline">SIMPLE PROCESS</span>
-
-                <h2>How CivicEye Works</h2>
-
-                <p>Four simple steps towards a better community.</p>
-
-            </div>
-
-            <div class="steps">
-
-                <article class="step">
-                    <div class="step-number">01</div>
-                    <h3>Report</h3>
-                    <p>Capture the issue and submit your complaint.</p>
-                </article>
-
-                <article class="step">
-                    <div class="step-number">02</div>
-                    <h3>Community</h3>
-                    <p>Let other citizens view and support your report.</p>
-                </article>
-
-                <article class="step">
-                    <div class="step-number">03</div>
-                    <h3>Track</h3>
-                    <p>Follow the progress of your complaint.</p>
-                </article>
-
-                <article class="step">
-                    <div class="step-number">04</div>
-                    <h3>Resolve</h3>
-                    <p>See your neighbourhood become a better place.</p>
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- CALL TO ACTION -->
-        <section class="cta">
-
-            <h2>Be the Change Your City Needs!</h2>
-
-            <p>
-                Don't ignore civic problems.
-                Take the first step towards solving them.
-            </p>
-
-            <a href="report.html" class="btn btn-light">
-                Report an Issue Now →
-            </a>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-    <footer class="footer">
-
-        <div class="footer-content">
-
-            <div class="footer-brand">
-
-                <div class="logo">
-                    🏙️ Civic<span class="highlight">Eye</span>
-                </div>
-
-                <p>
-                    Empowering citizens. Improving communities.
-                    Building better cities together.
-                </p>
-
-            </div>
-
-            <div class="footer-links">
-
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="report.html">Report Issue</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="map.html">Explore Map</a>
-
-            </div>
-
-            <div class="footer-links">
-
-                <h3>Explore</h3>
-                <a href="#about">About Us</a>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-
-            </div>
-
-            <div class="footer-contact">
-
-                <h3>Our Mission</h3>
-
-                <p>
-                    Making civic issue reporting simple,
-                    transparent and community-driven.
-                </p>
-
-            </div>
-
+      </div>
+    </section>
+
+    <!-- LIVE STATISTICS BAR -->
+    <section class="stats-section">
+      <div class="section-wrapper stats">
+        <div class="stat-card">
+          <h2 id="homeTotal">3</h2>
+          <p>Total Reports</p>
         </div>
 
-        <div class="footer-bottom">
-
-            <p>&copy; 2026 CivicEye. All Rights Reserved.</p>
-
+        <div class="stat-card">
+          <h2 id="homeResolved" class="text-success">1</h2>
+          <p>Issues Resolved</p>
         </div>
 
-    </footer>
+        <div class="stat-card">
+          <h2 id="homeActive" class="text-warning">2</h2>
+          <p>Active Issues</p>
+        </div>
+
+        <div class="stat-card">
+          <h2 id="homeUpvotes">45</h2>
+          <p>Community Upvotes</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ISSUE CATEGORIES -->
+    <section class="issue-categories">
+      <div class="section-wrapper">
+        <div class="section-heading">
+          <span class="tagline">IDENTIFY THE PROBLEM</span>
+          <h2>What Issues Can You Report?</h2>
+          <p>Click any category below to report a problem in your neighbourhood.</p>
+        </div>
+
+        <div class="categories-container">
+          <a href="report.html?category=Roads" class="category-card">
+            <div class="category-icon">🛣️</div>
+            <h3>Road Damage</h3>
+            <p>Report potholes, damaged footpaths, and unsafe road stretches.</p>
+            <span class="card-link">Report Road Issue →</span>
+          </a>
+
+          <a href="report.html?category=Sanitation" class="category-card">
+            <div class="category-icon">🗑️</div>
+            <h3>Garbage Issues</h3>
+            <p>Report overflowing bins, blackspots, and uncollected waste.</p>
+            <span class="card-link">Report Sanitation →</span>
+          </a>
+
+          <a href="report.html?category=Water Supply" class="category-card">
+            <div class="category-icon">💧</div>
+            <h3>Water Problems</h3>
+            <p>Report pipeline leaks, sewage overflow, and drainage blocks.</p>
+            <span class="card-link">Report Water Issue →</span>
+          </a>
+
+          <a href="report.html?category=Electricity" class="category-card">
+            <div class="category-icon">💡</div>
+            <h3>Streetlights</h3>
+            <p>Report non-functional streetlights, sparks, or dark stretches.</p>
+            <span class="card-link">Report Electricity →</span>
+          </a>
+
+          <a href="report.html?category=Other" class="category-card">
+            <div class="category-icon">🚧</div>
+            <h3>Public Safety</h3>
+            <p>Highlight open manholes, fallen trees, and hazardous wires.</p>
+            <span class="card-link">Report Hazard →</span>
+          </a>
+
+          <a href="report.html?category=Other" class="category-card">
+            <div class="category-icon">🌳</div>
+            <h3>Public Spaces</h3>
+            <p>Report broken park equipment and neglected community areas.</p>
+            <span class="card-link">Report Public Space →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT & FEATURES COMBINED -->
+    <section class="features" id="features">
+      <div class="section-wrapper">
+        <div class="section-heading" id="about">
+          <span class="tagline">WHY CIVICEYE</span>
+          <h2>Making Every Citizen's Voice Count</h2>
+          <p>
+            CivicEye connects residents with local authorities through a transparent,
+            crowdsourced platform to report, upvote, and track neighbourhood issues.
+          </p>
+        </div>
+
+        <div class="feature-container">
+          <article class="feature-card">
+            <div class="feature-icon">📸</div>
+            <h3>Photo Evidence</h3>
+            <p>Snap and attach real-time photos of potholes, garbage, or leaks for instant verification.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">📍</div>
+            <h3>Live Map Pinning</h3>
+            <p>Tag exact GPS coordinates and inspect active issues across the city on an interactive map.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">👍</div>
+            <h3>Community Upvoting</h3>
+            <p>Upvote existing complaints in your area so urgent problems rise to the top priority.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Transparent Tracking</h3>
+            <p>Follow real-time status updates from Pending to In Progress until the issue is Resolved.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="section-wrapper">
+        <div class="section-heading">
+          <span class="tagline">SIMPLE PROCESS</span>
+          <h2>How CivicEye Works</h2>
+          <p>Four simple steps towards a cleaner, safer neighbourhood.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">01</div>
+            <h3>Spot & Capture</h3>
+            <p>Take a photo of the civic issue and tag its exact location.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+            <h3>Community Upvotes</h3>
+            <p>Neighbours view the report on the dashboard and upvote to boost priority.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+            <h3>Track Action</h3>
+            <p>Monitor status changes and live analytics on the public dashboard.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">04</div>
+            <h3>Verified Resolution</h3>
+            <p>The issue is marked resolved and turns green on the live city map.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="section-wrapper">
+      <div class="cta">
+        <h2>Be the Change Your City Needs!</h2>
+        <p>Don't walk past a civic problem. Take 30 seconds to put it on the map.</p>
+        <div class="cta-buttons">
+          <a href="report.html" class="btn btn-light btn-lg">Report an Issue Now →</a>
+          <a href="dashboard.html" class="btn btn-outline-light btn-lg">View Public Dashboard</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="section-wrapper footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🏙️</span>
+          <span>Civic<span class="highlight">Eye</span></span>
+        </a>
+        <p>Empowering citizens. Improving communities. Building better cities together through transparent civic tech.</p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Platform</h3>
+        <a href="index.html">Home</a>
+        <a href="report.html">Report Issue</a>
+        <a href="dashboard.html">Public Dashboard</a>
+        <a href="map.html">Explore Live Map</a>
+      </div>
+
+      <div class="footer-links">
+        <h3>Learn More</h3>
+        <a href="#about">About CivicEye</a>
+        <a href="#features">Key Features</a>
+        <a href="#how-it-works">How It Works</a>
+      </div>
+
+      <div class="footer-contact">
+        <h3>Our Mission</h3>
+        <p>Making local civic issue reporting simple, transparent, and community-driven.</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 CivicEye. Built for Better Neighbourhoods.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
