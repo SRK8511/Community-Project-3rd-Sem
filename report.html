@@ -1,274 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<section class="report-section">
-    <div class="report-container">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Report a local civic issue on CivicEye with photo evidence and exact map coordinates.">
+  <title>CivicEye | Report a Civic Issue</title>
 
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS for Interactive Map Pin Selection -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="page-fade-in">
+
+  <!-- UNIFIED NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏙️</span>
+        <span>Civic<span class="highlight">Eye</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="report.html" class="active">Report Issue</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="map.html">Explore Map</a>
+      </nav>
+
+      <div class="nav-buttons">
+        <a href="dashboard.html" class="btn btn-outline-light">View Reports</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="report-section">
+    <div class="section-wrapper">
+
+      <!-- Breadcrumb Navigation for Smooth Movement back to Home -->
+      <div class="report-breadcrumb">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        <span id="prefillNotice" class="prefill-pill" style="display: none;">
+          ✨ Category pre-selected from Homepage
+        </span>
+      </div>
+
+      <!-- Page Header -->
+      <div class="report-header">
+        <span class="tagline">📢 CITIZEN REPORTING PORTAL</span>
         <h1>Report a Civic Issue</h1>
-        <p>Help make your community better by reporting local problems.</p>
+        <p>Help make your neighbourhood cleaner and safer by submitting a verified issue report.</p>
+      </div>
 
+      <div class="report-container">
         <form id="reportForm">
 
-            <!-- Automatic Report ID -->
-            <div class="form-group">
-                <label for="reportId">Report ID</label>
-                <input
-                    type="text"
-                    id="reportId"
-                    name="reportId"
-                    placeholder="Generated automatically after submission"
-                    readonly
-                >
+          <!-- TOP BAR: AUTOMATIC REPORT ID -->
+          <div class="report-id-banner">
+            <div>
+              <label for="reportId">Tracking Reference ID</label>
+              <small>Automatically assigned to track your complaint on the Dashboard</small>
             </div>
+            <input
+              type="text"
+              id="reportId"
+              name="reportId"
+              readonly
+            >
+          </div>
 
-            <!-- Contact Information -->
-            <h3>Contact Information</h3>
-
-            <div class="form-group">
-                <label for="reporterName">Your Name (Optional)</label>
-                <input
-                    type="text"
-                    id="reporterName"
-                    name="reporterName"
-                    placeholder="Enter your name"
-                    maxlength="100"
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address (Optional)</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone Number (Optional)</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="Enter your phone number"
-                >
+          <!-- SECTION 1: ISSUE DETAILS -->
+          <div class="form-section-block">
+            <div class="form-section-title">
+              <span class="step-badge">01</span>
+              <div>
+                <h3>Issue Details</h3>
+                <p>Tell us what the problem is and which department should handle it.</p>
+              </div>
             </div>
 
             <!-- Issue Title -->
             <div class="form-group">
-                <label for="title">Issue Title</label>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Example: Pothole on Main Road"
-                    maxlength="100"
-                    required
-                >
+              <label for="title">Issue Title <span class="req">*</span></label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Example: Deep pothole near Banashankari signal"
+                maxlength="100"
+                required
+              >
             </div>
 
-            <!-- Category -->
-            <div class="form-group">
-                <label for="category">Select Category</label>
-
+            <!-- 2-Column Row: Category & Responsible Department -->
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="category">Select Category <span class="req">*</span></label>
                 <select id="category" name="category" required>
-                    <option value="">Choose a category</option>
-                    <option value="Road Damage">Road Damage</option>
-                    <option value="Garbage">Garbage</option>
-                    <option value="Water Leakage">Water Leakage</option>
-                    <option value="Street Lights">Street Lights</option>
-                    <option value="Drainage">Drainage</option>
-                    <option value="Public Safety">Public Safety</option>
-                    <option value="Other">Other</option>
+                  <option value="">Choose a category</option>
+                  <option value="Roads">Road Damage</option>
+                  <option value="Sanitation">Garbage & Sanitation</option>
+                  <option value="Water Supply">Water Leakage & Drainage</option>
+                  <option value="Electricity">Street Lights & Electricity</option>
+                  <option value="Public Safety">Public Safety & Hazards</option>
+                  <option value="Other">Public Spaces / Other</option>
                 </select>
-            </div>
+              </div>
 
-            <!-- Responsible Department -->
-            <div class="form-group">
-                <label for="department">Responsible Department</label>
-
+              <div class="form-group">
+                <label for="department">Responsible Department <span class="req">*</span></label>
                 <select id="department" name="department" required>
-                    <option value="">Select department</option>
-                    <option value="Road Maintenance Department">
-                        Road Maintenance Department
-                    </option>
-                    <option value="Sanitation Department">
-                        Sanitation Department
-                    </option>
-                    <option value="Water Supply Department">
-                        Water Supply Department
-                    </option>
-                    <option value="Electricity Department">
-                        Electricity Department
-                    </option>
-                    <option value="Drainage Department">
-                        Drainage Department
-                    </option>
-                    <option value="Public Safety Department">
-                        Public Safety Department
-                    </option>
-                    <option value="Other Department">
-                        Other Department
-                    </option>
+                  <option value="">Auto-selected or choose manually</option>
+                  <option value="Road Maintenance Department">Road Maintenance Department</option>
+                  <option value="Sanitation Department">Sanitation Department</option>
+                  <option value="Water Supply Department">Water Supply & Drainage Department</option>
+                  <option value="Electricity Department">Electricity Department</option>
+                  <option value="Public Safety Department">Public Safety Department</option>
+                  <option value="Other Department">Other Municipal Department</option>
                 </select>
+              </div>
             </div>
 
-            <!-- Description -->
+            <!-- Description with Live Character Counter -->
             <div class="form-group">
-                <label for="description">Issue Description</label>
+              <div class="label-row">
+                <label for="description">Issue Description <span class="req">*</span></label>
+                <small id="charCount">0 / 1000 characters</small>
+              </div>
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                maxlength="1000"
+                placeholder="Describe the exact issue, landmark details, and how long it has been there..."
+                required
+              ></textarea>
+            </div>
 
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="5"
-                    maxlength="1000"
-                    placeholder="Describe the issue in detail..."
-                    required
-                ></textarea>
+            <!-- 2-Column Row: Date & Time of Issue -->
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="issueDate">Date Spotted <span class="req">*</span></label>
+                <input type="date" id="issueDate" name="issueDate" required>
+              </div>
 
-                <small>Maximum 1000 characters.</small>
+              <div class="form-group">
+                <label for="issueTime">Time Spotted <span class="req">*</span></label>
+                <input type="time" id="issueTime" name="issueTime" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: LOCATION & PHOTO EVIDENCE -->
+          <div class="form-section-block">
+            <div class="form-section-title">
+              <span class="step-badge">02</span>
+              <div>
+                <h3>Location & Photo Evidence</h3>
+                <p>Pin the exact spot on the map and attach clear photos of the problem.</p>
+              </div>
             </div>
 
             <!-- Issue Location -->
             <div class="form-group">
+              <label for="location">Street Address or Landmark <span class="req">*</span></label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Example: 80 Feet Road, near BDA Complex, Bengaluru"
+                required
+              >
 
-                <label for="location">Issue Location</label>
-
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    placeholder="Enter street, area or landmark"
-                    required
-                >
-
-                <!-- Select Location on Map -->
-                <button
-                    type="button"
-                    id="selectMapLocation"
-                    class="btn"
-                >
-                    Select Location on Map
+              <!-- Location Action Buttons -->
+              <div class="location-actions">
+                <button type="button" id="selectMapLocation" class="btn btn-secondary">
+                  🗺️ Select Location on Map
                 </button>
-
-                <!-- Hidden Coordinates -->
-                <input
-                    type="hidden"
-                    id="latitude"
-                    name="latitude"
-                >
-
-                <input
-                    type="hidden"
-                    id="longitude"
-                    name="longitude"
-                >
-
-                <p id="selectedLocation">
-                    No location selected yet.
-                </p>
-
-            </div>
-
-            <!-- Date and Time -->
-            <div class="form-group">
-                <label for="issueDate">Date of Issue</label>
-
-                <input
-                    type="date"
-                    id="issueDate"
-                    name="issueDate"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="issueTime">Time of Issue</label>
-
-                <input
-                    type="time"
-                    id="issueTime"
-                    name="issueTime"
-                    required
-                >
-            </div>
-
-            <!-- Urgency Level -->
-            <div class="form-group">
-                <label for="urgency">Urgency Level</label>
-
-                <select id="urgency" name="urgency" required>
-                    <option value="">Select urgency</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-            </div>
-
-            <!-- Multiple Photo Upload -->
-            <div class="form-group">
-                <label for="photo">Upload Issue Photos</label>
-
-                <input
-                    type="file"
-                    id="photo"
-                    name="photo"
-                    accept="image/jpeg,image/png,image/webp"
-                    multiple
-                    required
-                >
-
-                <small>
-                    You can select multiple JPG, PNG or WebP images.
-                </small>
-
-                <!-- Photo Preview Area -->
-                <div
-                    id="photoPreview"
-                    class="photo-preview-container"
-                ></div>
-            </div>
-
-            <!-- Anonymous Reporting -->
-            <div class="form-group">
-                <label>
-                    <input
-                        type="checkbox"
-                        id="anonymous"
-                        name="anonymous"
-                    >
-                    Submit this report anonymously
-                </label>
-            </div>
-
-            <!-- Confirmation -->
-            <div class="form-group">
-                <label>
-                    <input
-                        type="checkbox"
-                        id="confirmation"
-                        name="confirmation"
-                        required
-                    >
-                    I confirm that the information provided
-                    in this report is accurate to the best
-                    of my knowledge.
-                </label>
-            </div>
-
-            <!-- Form Buttons -->
-            <div class="form-buttons">
-
-                <button type="reset" class="btn">
-                    Reset Form
+                <button type="button" id="useGpsBtn" class="btn btn-outline">
+                  🎯 Use My Current GPS
                 </button>
+              </div>
 
-                <button type="submit" class="btn">
-                    Submit Report
-                </button>
+              <!-- Interactive Map Drawer (Toggles open when button is clicked) -->
+              <div id="mapPickerWrapper" class="map-picker-wrapper" style="display: none;">
+                <div class="map-picker-hint">
+                  👆 Click anywhere on the map below to drop a pin at the issue location:
+                </div>
+                <div id="pickerMap"></div>
+              </div>
 
+              <!-- Hidden Coordinates -->
+              <input type="hidden" id="latitude" name="latitude">
+              <input type="hidden" id="longitude" name="longitude">
+
+              <!-- Selected Coordinate Pill -->
+              <div id="selectedLocation" class="location-status-pill">
+                📍 Default pin set to Bengaluru central — click above to refine exact coordinates.
+              </div>
             </div>
+
+            <!-- Multiple Photo Upload Zone -->
+            <div class="form-group">
+              <label for="photo">Upload Issue Photos <span class="req">*</span></label>
+              <label for="photo" class="upload-dropzone" id="dropzone">
+                <div class="upload-icon">📸</div>
+                <strong>Click to browse or drag & drop photos here</strong>
+                <small>Supports multiple JPG, PNG, or WebP images</small>
+                <input
+                  type="file"
+                  id="photo"
+                  name="photo"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  required
+                >
+              </label>
+
+              <!-- Photo Preview Thumbnails -->
+              <div id="photoPreview" class="photo-preview-container"></div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: REPORTER CONTACT INFORMATION -->
+          <div class="form-section-block">
+            <div class="form-section-title" style="justify-content: space-between; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.9rem;">
+                <span class="step-badge">03</span>
+                <div>
+                  <h3>Contact Information</h3>
+                  <p>Optional details in case authorities need clarification.</p>
+                </div>
+              </div>
+
+              <!-- Anonymous Reporting Toggle Switch -->
+              <label class="checkbox-pill">
+                <input type="checkbox" id="anonymous" name="anonymous">
+                <span>🕵️ Submit Anonymously</span>
+              </label>
+            </div>
+
+            <div id="contactFieldsGrid" class="form-row-3">
+              <div class="form-group">
+                <label for="reporterName">Your Name (Optional)</label>
+                <input
+                  type="text"
+                  id="reporterName"
+                  name="reporterName"
+                  placeholder="Enter your name"
+                  maxlength="100"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address (Optional)</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@example.com"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number (Optional)</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+91 98765 43210"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- ACCURACY CONFIRMATION -->
+          <div class="confirmation-box">
+            <label class="confirmation-label">
+              <input type="checkbox" id="confirmation" name="confirmation" required>
+              <span>
+                I confirm that the information and photo evidence provided in this report are genuine and accurate to the best of my knowledge.
+              </span>
+            </label>
+          </div>
+
+          <!-- FORM SUBMIT & RESET BUTTONS -->
+          <div class="form-buttons">
+            <button type="reset" class="btn btn-secondary btn-lg">
+              Reset Form
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg">
+              Submit Report to Dashboard →
+            </button>
+          </div>
 
         </form>
+      </div>
 
     </div>
-</section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="section-wrapper footer-bottom" style="padding-top: 0;">
+      <p>&copy; 2026 CivicEye. Empowering Citizens for Better Neighbourhoods.</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS & Report Logic -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/report.js"></script>
+</body>
+
+</html>
