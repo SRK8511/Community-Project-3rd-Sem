@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicEye - Community Feed</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">CivicEye</a>
+
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="report.html">Report Issue</a>
+                <a href="dashboard.html" class="active">Community Feed</a>
+                <a href="map.html">Explore Map</a>
+            </nav>
+
+            <div class="nav-buttons">
+                <a href="report.html" class="btn">+ Create Report</a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- DASHBOARD MAIN -->
+    <main class="community-dashboard">
+
+        <!-- PAGE INTRO -->
+        <section class="feed-heading">
+            <div>
+                <span class="feed-label">YOUR COMMUNITY, YOUR VOICE</span>
+                <h1>Community Feed</h1>
+                <p>Discover local issues, support reports and make your neighbourhood better.</p>
+            </div>
+
+            <a href="report.html" class="create-report-btn">
+                + Report an Issue
+            </a>
+        </section>
+
+
+        <!-- COMMUNITY STATS -->
+        <section class="community-stats">
+
+            <div class="stat-card">
+                <span>📝</span>
+                <div>
+                    <h2 id="totalReports">0</h2>
+                    <p>Total Reports</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>❤️</span>
+                <div>
+                    <h2 id="totalVotes">0</h2>
+                    <p>Community Votes</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>💬</span>
+                <div>
+                    <h2 id="totalComments">0</h2>
+                    <p>Comments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>✅</span>
+                <div>
+                    <h2 id="resolvedReports">0</h2>
+                    <p>Resolved Issues</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- FEED LAYOUT -->
+        <section class="feed-layout">
+
+            <!-- LEFT SIDEBAR -->
+            <aside class="feed-sidebar">
+
+                <h3>Explore Feed</h3>
+
+                <a href="#reportsContainer" class="sidebar-link active">
+                    🏠 All Reports
+                </a>
+
+                <a href="#reportsContainer" class="sidebar-link">
+                    🔥 Trending
+                </a>
+
+                <a href="#reportsContainer" class="sidebar-link">
+                    ⚠️ Urgent Issues
+                </a>
+
+                <a href="#reportsContainer" class="sidebar-link">
+                    ❤️ Most Voted
+                </a>
+
+                <a href="#reportsContainer" class="sidebar-link">
+                    🆕 Recently Reported
+                </a>
+
+                <div class="sidebar-note">
+                    <h4>Be a Civic Hero!</h4>
+                    <p>Your votes and comments help bring attention to important community problems.</p>
+                </div>
+
+            </aside>
+
+
+            <!-- MAIN REPORT FEED -->
+            <div class="report-feed">
+
+                <!-- SEARCH AND FILTERS -->
+                <div class="feed-toolbar">
+
+                    <input
+                        type="search"
+                        id="searchReports"
+                        placeholder="Search issues or locations..."
+                    >
+
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Road Damage">Road Damage</option>
+                        <option value="Garbage">Garbage</option>
+                        <option value="Water Leakage">Water Leakage</option>
+                        <option value="Street Lights">Street Lights</option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="Public Safety">Public Safety</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <select id="sortReports">
+                        <option value="latest">Latest</option>
+                        <option value="votes">Most Voted</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
+
+                </div>
+
+
+                <!-- REPORT CARDS WILL BE DISPLAYED HERE -->
+                <div id="reportsContainer">
+
+                    <div class="feed-loading" id="feedLoading">
+                        Loading community reports...
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+                <div id="noReports" class="empty-feed" hidden>
+                    <span>📭</span>
+                    <h3>No reports found</h3>
+                    <p>Try another search or be the first to report an issue.</p>
+                    <a href="report.html" class="create-report-btn">
+                        Create a Report
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDEBAR -->
+            <aside class="feed-rightbar">
+
+                <div class="right-card">
+                    <h3>Community Highlights 🔥</h3>
+
+                    <div class="highlight-item">
+                        <span>🏆</span>
+                        <div>
+                            <strong>Top Supported Issue</strong>
+                            <p id="topIssue">Loading...</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-item">
+                        <span>📍</span>
+                        <div>
+                            <strong>Active Area</strong>
+                            <p id="activeArea">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-card">
+                    <h3>How CivicEye Works</h3>
+                    <p>1. Report a local issue.</p>
+                    <p>2. Let your community vote and comment.</p>
+                    <p>3. Track progress until resolution.</p>
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+
+    <!-- REPORT CARD TEMPLATE
+         Your friend's JavaScript can clone this template
+         and fill its fields with fetched report data. -->
+
+    <template id="reportCardTemplate">
+
+        <article class="social-report-card">
+
+            <div class="report-card-header">
+
+                <div class="report-user">
+                    <div class="user-avatar">👤</div>
+
+                    <div>
+                        <h3 class="reporter-name">Community Member</h3>
+                        <p class="report-time">Reported recently</p>
+                    </div>
+                </div>
+
+                <span class="report-type">NEW</span>
+
+            </div>
+
+
+            <div class="report-card-content">
+
+                <div class="report-tags">
+                    <span class="report-category">Road Damage</span>
+                    <span class="report-urgency">High Priority</span>
+                </div>
+
+                <h2 class="report-title">Issue title</h2>
+
+                <p class="report-description">
+                    Report description will appear here.
+                </p>
+
+                <p class="report-location">
+                    📍 <span class="location-text">Issue location</span>
+                </p>
+
+                <img
+                    class="report-image"
+                    src=""
+                    alt="Reported civic issue"
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- ISSUE STATUS -->
+            <div class="report-status-section">
+
+                <span class="status-label">Current Status</span>
+
+                <span class="report-status pending">
+                    Pending
+                </span>
+
+            </div>
+
+
+            <!-- TIME ELAPSED -->
+            <div class="report-extra-info">
+
+                <span>⏱️</span>
+                <span class="time-elapsed">Reported recently</span>
+
+            </div>
+
+
+            <!-- FUNDING PROGRESS -->
+            <div class="funding-section">
+
+                <div class="funding-heading">
+                    <strong>Community Funding Progress</strong>
+                    <span class="funding-percentage">0%</span>
+                </div>
+
+                <div class="funding-progress">
+                    <div class="funding-progress-fill"></div>
+                </div>
+
+                <p class="funding-details">
+                    Funding information unavailable
+                </p>
+
+            </div>
+
+
+            <!-- SOCIAL ACTIONS -->
+            <div class="report-social-actions">
+
+                <button type="button" class="vote-btn">
+                    ❤️ <span class="vote-count">0</span> Votes
+                </button>
+
+                <button type="button" class="comment-toggle-btn">
+                    💬 <span class="comment-count">0</span> Comments
+                </button>
+
+                <button type="button" class="share-btn">
+                    ↗ Share
+                </button>
+
+            </div>
+
+
+            <!-- COMMENTS -->
+            <div class="report-comments">
+
+                <div class="comments-list">
+                    <!-- Comments will be loaded here -->
+                </div>
+
+                <form class="comment-form">
+
+                    <input
+                        type="text"
+                        class="comment-input"
+                        placeholder="Write a comment..."
+                        maxlength="500"
+                    >
+
+                    <button type="submit">
+                        Post
+                    </button>
+
+                </form>
+
+            </div>
+
+        </article>
+
+    </template>
+
+
+    <!-- Friend's JavaScript handles fetching and displaying reports -->
+    <script src="js/dashboard.js" defer></script>
+
+</body>
+</html>
