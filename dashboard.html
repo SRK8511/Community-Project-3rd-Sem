@@ -1,361 +1,416 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivicEye - Community Feed</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicEye | Community Feed & Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Right Sidebar Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="page-fade-in">
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="nav-inner">
-            <a href="index.html" class="logo">CivicEye</a>
+  <!-- UNIFIED NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏙️</span>
+        <span>Civic<span class="highlight">Eye</span></span>
+      </a>
 
-            <nav class="nav-menu">
-                <a href="index.html">Home</a>
-                <a href="report.html">Report Issue</a>
-                <a href="dashboard.html" class="active">Community Feed</a>
-                <a href="map.html">Explore Map</a>
-            </nav>
+      <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="report.html">Report Issue</a>
+        <a href="dashboard.html" class="active">Community Feed</a>
+        <a href="map.html">Explore Map</a>
+      </nav>
 
-            <div class="nav-buttons">
-                <a href="report.html" class="btn">+ Create Report</a>
-            </div>
+      <div class="nav-buttons" style="display: flex; gap: 0.65rem; align-items: center;">
+        <button id="adminToggleBtn" class="btn btn-outline-light" type="button" title="Toggle Municipal Admin Mode">
+          🔒 Admin: OFF
+        </button>
+        <a href="report.html" class="btn btn-primary">+ Create Report</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD MAIN -->
+  <main class="community-dashboard section-wrapper">
+
+    <!-- PAGE INTRO -->
+    <section class="feed-heading">
+      <div>
+        <span class="tagline">📣 YOUR COMMUNITY, YOUR VOICE</span>
+        <h1>Community Issue Feed</h1>
+        <p>Discover local issues, upvote urgent problems, and track neighbourhood resolutions in real time.</p>
+      </div>
+
+      <div class="feed-heading-actions">
+        <a href="map.html" class="btn btn-secondary btn-lg">🗺️ View Live Map</a>
+        <a href="report.html" class="btn btn-primary btn-lg">+ Report an Issue</a>
+      </div>
+    </section>
+
+    <!-- MUNICIPAL ADMIN ACCOUNT MODERATION PANEL (Visible only when Admin Mode is ON) -->
+    <section
+      id="adminAccountModPanel"
+      hidden
+      style="background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 14px; padding: 1.1rem 1.35rem; margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);"
+    >
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #38bdf8;">
+            🛡️ Municipal Authority Controls
+          </span>
+          <h3 style="margin: 0.2rem 0 0; font-size: 1.05rem; color: #ffffff;">
+            User Account Ban &amp; Unban Management (By Account ID)
+          </h3>
         </div>
-    </header>
 
+        <div style="display: flex; gap: 0.55rem; flex-wrap: wrap; align-items: center;">
+          <input
+            type="text"
+            id="adminAccountIdInput"
+            placeholder="Enter Account ID (e.g. USR-104)"
+            style="padding: 0.55rem 0.85rem; border-radius: 8px; border: 1px solid #475569; background: #1e293b; color: #ffffff; font-size: 0.88rem; min-width: 220px;"
+          >
+          <button
+            type="button"
+            id="unbanAccountByIdBtn"
+            style="padding: 0.55rem 0.95rem; border-radius: 8px; border: none; background: #16a34a; color: #ffffff; font-weight: 600; font-size: 0.85rem; cursor: pointer;"
+          >
+            ✅ Unban Account ID
+          </button>
+          <button
+            type="button"
+            id="banAccountByIdBtn"
+            style="padding: 0.55rem 0.95rem; border-radius: 8px; border: none; background: #dc2626; color: #ffffff; font-weight: 600; font-size: 0.85rem; cursor: pointer;"
+          >
+            🚫 Ban Account ID
+          </button>
+        </div>
+      </div>
 
-    <!-- DASHBOARD MAIN -->
-    <main class="community-dashboard">
+      <div
+        id="bannedAccountsList"
+        style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid #1e293b; font-size: 0.84rem; color: #cbd5e1; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;"
+      >
+        <span>No user accounts are currently banned.</span>
+      </div>
+    </section>
 
-        <!-- PAGE INTRO -->
-        <section class="feed-heading">
+    <!-- COMMUNITY STATS -->
+    <section class="community-stats">
+      <div class="stat-card feed-stat-card">
+        <div class="stat-icon-box blue-box">📝</div>
+        <div>
+          <h2 id="totalReports">0</h2>
+          <p>Total Reports</p>
+        </div>
+      </div>
+
+      <div class="stat-card feed-stat-card">
+        <div class="stat-icon-box red-box">▲</div>
+        <div>
+          <h2 id="totalVotes">0</h2>
+          <p>Community Upvotes</p>
+        </div>
+      </div>
+
+      <div class="stat-card feed-stat-card">
+        <div class="stat-icon-box amber-box">💬</div>
+        <div>
+          <h2 id="totalComments">0</h2>
+          <p>Citizen Comments</p>
+        </div>
+      </div>
+
+      <div class="stat-card feed-stat-card">
+        <div class="stat-icon-box green-box">✅</div>
+        <div>
+          <h2 id="resolvedReports" class="text-success">0</h2>
+          <p>Resolved Issues</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-COLUMN FEED LAYOUT -->
+    <section class="feed-layout">
+
+      <!-- LEFT SIDEBAR: QUICK VIEWS -->
+      <aside class="feed-sidebar">
+        <div class="sidebar-card">
+          <h3>Explore Feed</h3>
+
+          <button type="button" class="sidebar-link active" data-view="all">
+            <span>🏠 All Reports</span>
+            <span class="sidebar-count" id="countAll">0</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="trending">
+            <span>🔥 Trending (Most Upvoted)</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="pending">
+            <span>⏳ Pending Action</span>
+            <span class="sidebar-count pending-pill" id="countPending">0</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="progress">
+            <span>🚧 In Progress</span>
+            <span class="sidebar-count progress-pill" id="countProgress">0</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="resolved">
+            <span>✅ Resolved Issues</span>
+            <span class="sidebar-count resolved-pill" id="countResolved">0</span>
+          </button>
+        </div>
+
+        <div class="sidebar-note">
+          <div class="note-badge">💡 Civic Hero Tip</div>
+          <h4>Upvotes Drive Priority!</h4>
+          <p>Issues with the highest community upvotes rise to the top for faster municipal action.</p>
+        </div>
+      </aside>
+
+      <!-- CENTER COLUMN: TOOLBAR & SOCIAL REPORT CARDS -->
+      <div class="report-feed">
+
+        <!-- SEARCH, CATEGORY, STATUS & SORT TOOLBAR -->
+        <div class="feed-toolbar">
+          <div class="toolbar-search">
+            <span class="search-icon">🔍</span>
+            <input
+              type="search"
+              id="searchReports"
+              placeholder="Search by title, street, landmark, or ID..."
+            >
+          </div>
+
+          <div class="toolbar-filters">
+            <!-- Category Filter Dropdown -->
+            <select id="categoryFilter" aria-label="Filter by Category">
+              <option value="All">All Categories</option>
+              <option value="Roads">🛣️ Roads & Potholes</option>
+              <option value="Sanitation">🗑️ Garbage & Sanitation</option>
+              <option value="Water Supply">💧 Water & Drainage</option>
+              <option value="Electricity">💡 Streetlights & Power</option>
+              <option value="Public Safety">🚧 Public Safety</option>
+              <option value="Other">🌳 Public Spaces / Other</option>
+            </select>
+
+            <!-- Status Filter Dropdown -->
+            <select id="statusFilter" aria-label="Filter by Status">
+              <option value="All">All Statuses</option>
+              <option value="Pending">🔴 Pending</option>
+              <option value="In Progress">🟠 In Progress</option>
+              <option value="Resolved">🟢 Resolved</option>
+            </select>
+
+            <!-- Sort Order Dropdown -->
+            <select id="sortReports" aria-label="Sort Reports">
+              <option value="votes">🔥 Most Upvoted</option>
+              <option value="latest">🆕 Latest First</option>
+              <option value="oldest">📅 Oldest First</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- REPORT CARDS CONTAINER -->
+        <div id="reportsContainer" class="social-feed-list">
+          <div class="feed-loading" id="feedLoading">
+            Loading community reports...
+          </div>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div id="noReports" class="empty-feed" hidden>
+          <div class="empty-icon">📭</div>
+          <h3>No matching civic reports found</h3>
+          <p>Try clearing your search filters or report a new issue in your area.</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem;">
+            <button type="button" id="resetFiltersBtn" class="btn btn-secondary">Clear All Filters</button>
+            <a href="report.html" class="btn btn-primary">+ Create a Report</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR: ANALYTICS & HIGHLIGHTS -->
+      <aside class="feed-rightbar">
+
+        <!-- Live Chart.js Resolution Breakdown -->
+        <div class="right-card">
+          <h3>Resolution Analytics 📊</h3>
+          <div class="chart-box">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Community Highlights -->
+        <div class="right-card">
+          <h3>Community Highlights 🔥</h3>
+
+          <div class="highlight-item">
+            <span class="highlight-emoji">🏆</span>
             <div>
-                <span class="feed-label">YOUR COMMUNITY, YOUR VOICE</span>
-                <h1>Community Feed</h1>
-                <p>Discover local issues, support reports and make your neighbourhood better.</p>
+              <strong>Most Upvoted Issue</strong>
+              <p id="topIssue">Loading...</p>
             </div>
+          </div>
 
-            <a href="report.html" class="create-report-btn">
-                + Report an Issue
-            </a>
-        </section>
-
-
-        <!-- COMMUNITY STATS -->
-        <section class="community-stats">
-
-            <div class="stat-card">
-                <span>📝</span>
-                <div>
-                    <h2 id="totalReports">0</h2>
-                    <p>Total Reports</p>
-                </div>
+          <div class="highlight-item">
+            <span class="highlight-emoji">📍</span>
+            <div>
+              <strong>Most Active Area</strong>
+              <p id="activeArea">Loading...</p>
             </div>
-
-            <div class="stat-card">
-                <span>❤️</span>
-                <div>
-                    <h2 id="totalVotes">0</h2>
-                    <p>Community Votes</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <span>💬</span>
-                <div>
-                    <h2 id="totalComments">0</h2>
-                    <p>Comments</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <span>✅</span>
-                <div>
-                    <h2 id="resolvedReports">0</h2>
-                    <p>Resolved Issues</p>
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- FEED LAYOUT -->
-        <section class="feed-layout">
-
-            <!-- LEFT SIDEBAR -->
-            <aside class="feed-sidebar">
-
-                <h3>Explore Feed</h3>
-
-                <a href="#reportsContainer" class="sidebar-link active">
-                    🏠 All Reports
-                </a>
-
-                <a href="#reportsContainer" class="sidebar-link">
-                    🔥 Trending
-                </a>
-
-                <a href="#reportsContainer" class="sidebar-link">
-                    ⚠️ Urgent Issues
-                </a>
-
-                <a href="#reportsContainer" class="sidebar-link">
-                    ❤️ Most Voted
-                </a>
-
-                <a href="#reportsContainer" class="sidebar-link">
-                    🆕 Recently Reported
-                </a>
-
-                <div class="sidebar-note">
-                    <h4>Be a Civic Hero!</h4>
-                    <p>Your votes and comments help bring attention to important community problems.</p>
-                </div>
-
-            </aside>
-
-
-            <!-- MAIN REPORT FEED -->
-            <div class="report-feed">
-
-                <!-- SEARCH AND FILTERS -->
-                <div class="feed-toolbar">
-
-                    <input
-                        type="search"
-                        id="searchReports"
-                        placeholder="Search issues or locations..."
-                    >
-
-                    <select id="categoryFilter">
-                        <option value="">All Categories</option>
-                        <option value="Road Damage">Road Damage</option>
-                        <option value="Garbage">Garbage</option>
-                        <option value="Water Leakage">Water Leakage</option>
-                        <option value="Street Lights">Street Lights</option>
-                        <option value="Drainage">Drainage</option>
-                        <option value="Public Safety">Public Safety</option>
-                        <option value="Other">Other</option>
-                    </select>
-
-                    <select id="sortReports">
-                        <option value="latest">Latest</option>
-                        <option value="votes">Most Voted</option>
-                        <option value="oldest">Oldest</option>
-                    </select>
-
-                </div>
-
-
-                <!-- REPORT CARDS WILL BE DISPLAYED HERE -->
-                <div id="reportsContainer">
-
-                    <div class="feed-loading" id="feedLoading">
-                        Loading community reports...
-                    </div>
-
-                </div>
-
-
-                <!-- EMPTY STATE -->
-                <div id="noReports" class="empty-feed" hidden>
-                    <span>📭</span>
-                    <h3>No reports found</h3>
-                    <p>Try another search or be the first to report an issue.</p>
-                    <a href="report.html" class="create-report-btn">
-                        Create a Report
-                    </a>
-                </div>
-
-            </div>
-
-
-            <!-- RIGHT SIDEBAR -->
-            <aside class="feed-rightbar">
-
-                <div class="right-card">
-                    <h3>Community Highlights 🔥</h3>
-
-                    <div class="highlight-item">
-                        <span>🏆</span>
-                        <div>
-                            <strong>Top Supported Issue</strong>
-                            <p id="topIssue">Loading...</p>
-                        </div>
-                    </div>
-
-                    <div class="highlight-item">
-                        <span>📍</span>
-                        <div>
-                            <strong>Active Area</strong>
-                            <p id="activeArea">Loading...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="right-card">
-                    <h3>How CivicEye Works</h3>
-                    <p>1. Report a local issue.</p>
-                    <p>2. Let your community vote and comment.</p>
-                    <p>3. Track progress until resolution.</p>
-                </div>
-
-            </aside>
-
-        </section>
-
-    </main>
-
-
-    <!-- REPORT CARD TEMPLATE
-         Your friend's JavaScript can clone this template
-         and fill its fields with fetched report data. -->
-
-    <template id="reportCardTemplate">
-
-        <article class="social-report-card">
-
-            <div class="report-card-header">
-
-                <div class="report-user">
-                    <div class="user-avatar">👤</div>
-
-                    <div>
-                        <h3 class="reporter-name">Community Member</h3>
-                        <p class="report-time">Reported recently</p>
-                    </div>
-                </div>
-
-                <span class="report-type">NEW</span>
-
-            </div>
-
-
-            <div class="report-card-content">
-
-                <div class="report-tags">
-                    <span class="report-category">Road Damage</span>
-                    <span class="report-urgency">High Priority</span>
-                </div>
-
-                <h2 class="report-title">Issue title</h2>
-
-                <p class="report-description">
-                    Report description will appear here.
-                </p>
-
-                <p class="report-location">
-                    📍 <span class="location-text">Issue location</span>
-                </p>
-
-                <img
-                    class="report-image"
-                    src=""
-                    alt="Reported civic issue"
-                    hidden
-                >
-
-            </div>
-
-
-            <!-- ISSUE STATUS -->
-            <div class="report-status-section">
-
-                <span class="status-label">Current Status</span>
-
-                <span class="report-status pending">
-                    Pending
-                </span>
-
-            </div>
-
-
-            <!-- TIME ELAPSED -->
-            <div class="report-extra-info">
-
-                <span>⏱️</span>
-                <span class="time-elapsed">Reported recently</span>
-
-            </div>
-
-
-            <!-- FUNDING PROGRESS -->
-            <div class="funding-section">
-
-                <div class="funding-heading">
-                    <strong>Community Funding Progress</strong>
-                    <span class="funding-percentage">0%</span>
-                </div>
-
-                <div class="funding-progress">
-                    <div class="funding-progress-fill"></div>
-                </div>
-
-                <p class="funding-details">
-                    Funding information unavailable
-                </p>
-
-            </div>
-
-
-            <!-- SOCIAL ACTIONS -->
-            <div class="report-social-actions">
-
-                <button type="button" class="vote-btn">
-                    ❤️ <span class="vote-count">0</span> Votes
-                </button>
-
-                <button type="button" class="comment-toggle-btn">
-                    💬 <span class="comment-count">0</span> Comments
-                </button>
-
-                <button type="button" class="share-btn">
-                    ↗ Share
-                </button>
-
-            </div>
-
-
-            <!-- COMMENTS -->
-            <div class="report-comments">
-
-                <div class="comments-list">
-                    <!-- Comments will be loaded here -->
-                </div>
-
-                <form class="comment-form">
-
-                    <input
-                        type="text"
-                        class="comment-input"
-                        placeholder="Write a comment..."
-                        maxlength="500"
-                    >
-
-                    <button type="submit">
-                        Post
-                    </button>
-
-                </form>
-
-            </div>
-
-        </article>
-
-    </template>
-
-
-    <!-- Friend's JavaScript handles fetching and displaying reports -->
-    <script src="js/dashboard.js" defer></script>
-
+          </div>
+        </div>
+
+        <!-- How It Works Mini Card -->
+        <div class="right-card how-mini-card">
+          <h3>How CivicEye Works</h3>
+          <ul class="mini-steps">
+            <li><span>1</span> Snap & report a local issue.</li>
+            <li><span>2</span> Citizens upvote & comment to verify.</li>
+            <li><span>3</span> Authorities update status to Resolved.</li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </section>
+
+  </main>
+
+  <!-- SOCIAL REPORT CARD TEMPLATE -->
+  <template id="reportCardTemplate">
+    <article class="social-report-card">
+
+      <!-- Card Header -->
+      <div class="report-card-header">
+        <div class="report-user">
+          <div class="user-avatar">👤</div>
+          <div>
+            <h3 class="reporter-name">Community Member</h3>
+            <p class="report-time">Reported recently</p>
+          </div>
+        </div>
+
+        <div class="header-right-badges">
+          <span class="report-id-pill">#CE-101</span>
+          <span class="report-status badge badge-pending">Pending</span>
+        </div>
+      </div>
+
+      <!-- OFFICIAL BAN EXPLANATION BANNER (Shown when report card is banned) -->
+      <div
+        class="report-ban-banner"
+        hidden
+        style="background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; padding: 0.75rem 1rem; margin: 0.5rem 0 0.75rem; border-radius: 6px; font-size: 0.88rem;"
+      >
+        <strong style="display: block; margin-bottom: 0.2rem;">🚫 Report Card Banned by Municipal Authority</strong>
+        <span class="ban-reason-text">Explanation will appear here.</span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="report-card-content">
+        <div class="report-tags">
+          <span class="report-category">Roads</span>
+          <span class="report-department">Road Maintenance Dept</span>
+        </div>
+
+        <h2 class="report-title">Issue title</h2>
+        <p class="report-description">Report description will appear here.</p>
+
+        <div class="report-location-row">
+          <p class="report-location">
+            📍 <span class="location-text">Bengaluru</span>
+          </p>
+          <a href="map.html" class="map-jump-link">View on Map →</a>
+        </div>
+
+        <div class="report-image-wrap">
+          <img class="report-image" src="" alt="Reported civic issue" hidden>
+        </div>
+      </div>
+
+      <!-- RESOLUTION PROGRESS TRACKER -->
+      <div class="resolution-progress-section">
+        <div class="funding-heading">
+          <strong class="stage-label">Resolution Progress: Pending Review</strong>
+          <span class="funding-percentage">25%</span>
+        </div>
+        <div class="funding-progress">
+          <div class="funding-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- ADMIN CONTROLS (Visible only when Admin Mode is ON) -->
+      <div class="admin-control-bar" hidden style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.65rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span>🛠️ <strong>Municipal Action:</strong></span>
+          <select class="admin-status-select">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          class="admin-ban-card-btn"
+          style="padding: 0.4rem 0.8rem; border-radius: 6px; border: none; font-weight: 600; font-size: 0.8rem; cursor: pointer; background: #dc2626; color: #ffffff;"
+        >
+          🚫 Ban Report Card
+        </button>
+      </div>
+
+      <!-- SOCIAL ACTIONS BAR (UPVOTE, COMMENT, SHARE) -->
+      <div class="report-social-actions">
+        <button type="button" class="vote-btn">
+          <span class="vote-icon">▲</span>
+          <span class="vote-label">Upvote</span>
+          <span class="vote-count-pill vote-count">0</span>
+        </button>
+
+        <button type="button" class="comment-toggle-btn">
+          💬 <span class="comment-count">0</span> Comments
+        </button>
+
+        <button type="button" class="share-btn">
+          ↗ Share
+        </button>
+      </div>
+
+      <!-- EXPANDABLE COMMENTS SECTION -->
+      <div class="report-comments" hidden>
+        <div class="comments-list"></div>
+        <form class="comment-form">
+          <input
+            type="text"
+            class="comment-input"
+            placeholder="Add a comment as Citizen Member (ID: USR-104)..."
+            maxlength="300"
+            required
+          >
+          <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+      </div>
+
+    </article>
+  </template>
+
+  <script src="js/dashboard.js" defer></script>
 </body>
+
 </html>
