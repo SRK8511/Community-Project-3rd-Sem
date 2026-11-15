@@ -876,7 +876,7 @@ sidebarLinks.forEach(btn => {
 
 adminToggleBtn.addEventListener("click", () => {
   if (!isAdminMode) {
-    const pin = prompt("Enter Municipal Admin Passcode :", "1234");
+    const pin = prompt("Enter Municipal Admin Passcode :","****");
     if (pin === "1234") {
       isAdminMode = true;
       adminToggleBtn.textContent = "🔓 Admin: ON";
