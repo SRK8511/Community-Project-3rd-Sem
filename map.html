@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CivicEye - Explore Map</title>
+
+    <!-- Main CivicEye CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Leaflet Map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-inner">
+
+            <a href="index.html" class="logo">CivicEye</a>
+
+            <nav class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="report.html">Report Issue</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="map.html" class="active">Explore Map</a>
+            </nav>
+
+            <div class="nav-buttons">
+                <a href="report.html" class="btn">+ Report Issue</a>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- MAP PAGE -->
+    <main class="map-page">
+
+        <!-- PAGE HEADING -->
+        <section class="map-heading">
+
+            <div>
+                <span class="map-subtitle">CIVIC ISSUES AROUND YOU</span>
+
+                <h1>Explore Civic Issues</h1>
+
+                <p>
+                    Discover reported problems in your community.
+                    View their locations and track their progress.
+                </p>
+            </div>
+
+            <a href="report.html" class="btn">
+                + Report an Issue
+            </a>
+
+        </section>
+
+
+        <!-- MAP INFORMATION -->
+        <section class="map-information">
+
+            <div class="map-info-item">
+                <span>📍</span>
+                <div>
+                    <h3>Issue Locations</h3>
+                    <p>View reports on the map</p>
+                </div>
+            </div>
+
+            <div class="map-info-item">
+                <span>🚧</span>
+                <div>
+                    <h3>Nearby Problems</h3>
+                    <p>Find issues around your area</p>
+                </div>
+            </div>
+
+            <div class="map-info-item">
+                <span>✅</span>
+                <div>
+                    <h3>Track Progress</h3>
+                    <p>Check issue resolution status</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- MAP FILTERS -->
+        <section class="map-filters">
+
+            <h3>Filter Reports</h3>
+
+            <select id="mapCategoryFilter">
+                <option value="">All Categories</option>
+                <option value="Road Damage">Road Damage</option>
+                <option value="Garbage">Garbage</option>
+                <option value="Water Leakage">Water Leakage</option>
+                <option value="Street Lights">Street Lights</option>
+                <option value="Drainage">Drainage</option>
+                <option value="Public Safety">Public Safety</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <select id="mapStatusFilter">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+
+        </section>
+
+
+        <!-- MAP CONTAINER -->
+        <section class="map-container-section">
+
+            <div class="map-container-heading">
+                <h2>Community Issue Map</h2>
+                <span id="mapReportCount">Loading reports...</span>
+            </div>
+
+            <!-- JavaScript will render the map inside this div -->
+            <div id="map"></div>
+
+            <p id="mapMessage">
+                Loading map and reported issue locations...
+            </p>
+
+        </section>
+
+
+        <!-- MAP LEGEND -->
+        <section class="map-legend">
+
+            <h3>Map Legend</h3>
+
+            <div class="legend-items">
+
+                <div class="legend-item">
+                    <span class="legend-dot pending-dot"></span>
+                    Pending
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot progress-dot"></span>
+                    In Progress
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot resolved-dot"></span>
+                    Resolved
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- LEAFLET JAVASCRIPT LIBRARY -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <!-- Your friend's map JavaScript -->
+    <script src="js/map.js" defer></script>
+
+</body>
+
+</html>
