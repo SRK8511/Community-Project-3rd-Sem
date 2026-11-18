@@ -1,189 +1,220 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicEye | Explore Live Civic Map</title>
 
-    <title>CivicEye - Explore Map</title>
+  <!-- Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
-    <!-- Main CivicEye CSS -->
-    <link rel="stylesheet" href="css/style.css">
+  <!-- Leaflet Map CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
 
-    <!-- Leaflet Map CSS -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+  <!-- Main CivicEye CSS -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="page-fade-in">
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="nav-inner">
+  <!-- UNIFIED NAVBAR (Synced with dashboard.html) -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏙️</span>
+        <span>Civic<span class="highlight">Eye</span></span>
+      </a>
 
-            <a href="index.html" class="logo">CivicEye</a>
+      <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="report.html">Report Issue</a>
+        <a href="dashboard.html">Community Feed</a>
+        <a href="map.html" class="active">Explore Map</a>
+      </nav>
 
-            <nav class="nav-menu">
-                <a href="index.html">Home</a>
-                <a href="report.html">Report Issue</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="map.html" class="active">Explore Map</a>
-            </nav>
+      <div class="nav-buttons" style="display: flex; gap: 0.65rem; align-items: center;">
+        <a href="dashboard.html" class="btn btn-outline-light">📊 Community Feed</a>
+        <a href="report.html" class="btn btn-primary">+ Create Report</a>
+      </div>
+    </div>
+  </header>
 
-            <div class="nav-buttons">
-                <a href="report.html" class="btn">+ Report Issue</a>
-            </div>
+  <!-- MAP PAGE MAIN -->
+  <main class="map-page section-wrapper">
 
+    <!-- PAGE HERO HEADING -->
+    <section class="map-heading">
+      <div>
+        <span class="map-subtitle">🗺️ LIVE GEOSPATIAL TRACKER</span>
+        <h1>Explore Civic Issues Around You</h1>
+        <p>
+          Discover reported neighbourhood problems across Bengaluru, inspect live resolution progress, and upvote urgent pins directly on the map.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="dashboard.html" class="btn" style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.22);">
+          📋 View Feed Cards
+        </a>
+        <a href="report.html" class="btn">
+          + Report an Issue
+        </a>
+      </div>
+    </section>
+
+    <!-- LIVE MAP METRIC CARDS -->
+    <section class="map-information">
+      <div class="map-info-item">
+        <span>📍</span>
+        <div>
+          <h3>Issue Locations</h3>
+          <p id="mapStatTotal">Loading mapped reports...</p>
         </div>
-    </header>
+      </div>
 
+      <div class="map-info-item">
+        <span>🚧</span>
+        <div>
+          <h3>Nearby Problems</h3>
+          <p id="mapStatActive">Checking pending &amp; active repairs...</p>
+        </div>
+      </div>
 
-    <!-- MAP PAGE -->
-    <main class="map-page">
+      <div class="map-info-item">
+        <span>✅</span>
+        <div>
+          <h3>Track Progress</h3>
+          <p id="mapStatResolved">Calculating resolution rate...</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- PAGE HEADING -->
-        <section class="map-heading">
+    <!-- UNIFIED MAP FILTERS, SEARCH & ACTION TOOLBAR -->
+    <section class="map-filters">
+      <h3>Filter Reports</h3>
 
-            <div>
-                <span class="map-subtitle">CIVIC ISSUES AROUND YOU</span>
+      <select id="mapCategoryFilter" aria-label="Filter by Category">
+        <option value="">All Categories</option>
+        <option value="Road Damage">🛣️ Road Damage &amp; Potholes</option>
+        <option value="Garbage">🗑️ Garbage &amp; Sanitation</option>
+        <option value="Water Leakage">💧 Water &amp; Drainage</option>
+        <option value="Street Lights">💡 Street Lights &amp; Power</option>
+        <option value="Drainage">🌊 Storm Drainage</option>
+        <option value="Public Safety">🚧 Public Safety</option>
+        <option value="Other">🌳 Public Spaces / Other</option>
+      </select>
 
-                <h1>Explore Civic Issues</h1>
+      <select id="mapStatusFilter" aria-label="Filter by Status">
+        <option value="">All Statuses</option>
+        <option value="Pending">🔴 Pending</option>
+        <option value="In Progress">🟠 In Progress</option>
+        <option value="Resolved">🟢 Resolved</option>
+      </select>
 
-                <p>
-                    Discover reported problems in your community.
-                    View their locations and track their progress.
-                </p>
+      <div class="map-extra-controls">
+        <div class="map-search-box">
+          <input
+            type="search"
+            id="mapSearchInput"
+            placeholder="Search street, landmark, title, or #ID..."
+            aria-label="Search map reports"
+          >
+        </div>
+
+        <div class="map-action-buttons">
+          <button type="button" id="mapLocateBtn" class="map-tool-btn primary-tool">
+            📍 Locate Me
+          </button>
+          <button type="button" id="mapFitAllBtn" class="map-tool-btn">
+            🗺️ Fit All Pins
+          </button>
+          <button type="button" id="mapResetBtn" class="map-tool-btn">
+            ↺ Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPLIT-VIEW MAP & SIDEBAR EXPLORER -->
+    <section class="map-container-section">
+      <div class="map-container-heading">
+        <div>
+          <h2>Community Issue Map</h2>
+          <p style="margin: 0.2rem 0 0; font-size: 0.84rem; color: #64748b;">
+            Click any pulsing pin on the map or select a report card on the right to inspect details.
+          </p>
+        </div>
+        <span id="mapReportCount">Loading reports...</span>
+      </div>
+
+      <div class="map-workspace">
+        <!-- Leaflet Map Canvas -->
+        <div class="map-canvas-wrap">
+          <div id="map"></div>
+        </div>
+
+        <!-- Synchronized Side Issue Explorer -->
+        <aside class="map-side-panel">
+          <div class="map-side-header">
+            <h3>Pinned Locations</h3>
+            <span class="map-side-hint">Click a card to fly to pin</span>
+          </div>
+          <div id="mapSideFeedList" class="map-side-list">
+            <div class="map-side-empty">
+              <p>Loading pinned civic reports...</p>
             </div>
+          </div>
+        </aside>
+      </div>
 
-            <a href="report.html" class="btn">
-                + Report an Issue
-            </a>
+      <p id="mapMessage" style="display: none;">
+        No civic reports match your current filter selection.
+      </p>
+    </section>
 
-        </section>
+    <!-- INTERACTIVE CLICK-TO-FILTER MAP LEGEND -->
+    <section class="map-legend">
+      <div>
+        <h3>Interactive Map Legend</h3>
+        <span style="font-size: 0.8rem; color: #64748b;">
+          Click any status badge below to quickly filter map markers
+        </span>
+      </div>
 
+      <div class="legend-items">
+        <div class="legend-item" data-status="Pending">
+          <span class="legend-dot pending-dot"></span>
+          Pending
+        </div>
 
-        <!-- MAP INFORMATION -->
-        <section class="map-information">
+        <div class="legend-item" data-status="In Progress">
+          <span class="legend-dot progress-dot"></span>
+          In Progress
+        </div>
 
-            <div class="map-info-item">
-                <span>📍</span>
-                <div>
-                    <h3>Issue Locations</h3>
-                    <p>View reports on the map</p>
-                </div>
-            </div>
+        <div class="legend-item" data-status="Resolved">
+          <span class="legend-dot resolved-dot"></span>
+          Resolved
+        </div>
+      </div>
+    </section>
 
-            <div class="map-info-item">
-                <span>🚧</span>
-                <div>
-                    <h3>Nearby Problems</h3>
-                    <p>Find issues around your area</p>
-                </div>
-            </div>
-
-            <div class="map-info-item">
-                <span>✅</span>
-                <div>
-                    <h3>Track Progress</h3>
-                    <p>Check issue resolution status</p>
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- MAP FILTERS -->
-        <section class="map-filters">
-
-            <h3>Filter Reports</h3>
-
-            <select id="mapCategoryFilter">
-                <option value="">All Categories</option>
-                <option value="Road Damage">Road Damage</option>
-                <option value="Garbage">Garbage</option>
-                <option value="Water Leakage">Water Leakage</option>
-                <option value="Street Lights">Street Lights</option>
-                <option value="Drainage">Drainage</option>
-                <option value="Public Safety">Public Safety</option>
-                <option value="Other">Other</option>
-            </select>
-
-            <select id="mapStatusFilter">
-                <option value="">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-            </select>
-
-        </section>
+  </main>
 
 
-        <!-- MAP CONTAINER -->
-        <section class="map-container-section">
-
-            <div class="map-container-heading">
-                <h2>Community Issue Map</h2>
-                <span id="mapReportCount">Loading reports...</span>
-            </div>
-
-            <!-- JavaScript will render the map inside this div -->
-            <div id="map"></div>
-
-            <p id="mapMessage">
-                Loading map and reported issue locations...
-            </p>
-
-        </section>
-
-
-        <!-- MAP LEGEND -->
-        <section class="map-legend">
-
-            <h3>Map Legend</h3>
-
-            <div class="legend-items">
-
-                <div class="legend-item">
-                    <span class="legend-dot pending-dot"></span>
-                    Pending
-                </div>
-
-                <div class="legend-item">
-                    <span class="legend-dot progress-dot"></span>
-                    In Progress
-                </div>
-
-                <div class="legend-item">
-                    <span class="legend-dot resolved-dot"></span>
-                    Resolved
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- LEAFLET JAVASCRIPT LIBRARY -->
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-    </script>
-
-    <!-- Your friend's map JavaScript -->
-    <script src="js/map.js" defer></script>
-
+  <!-- MAP LOGIC -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/firebase.js" defer></script>
+  <script src="js/map.js" defer></script>
 </body>
 
 </html>
