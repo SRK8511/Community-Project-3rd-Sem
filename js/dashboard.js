@@ -1,5 +1,5 @@
 // =========================================
-// 1. DUMMY DATA & STORAGE INITIALIZATION
+// 1. DUMMY DATA & SMART IMAGE LOADER
 // =========================================
 function generateRandomPercent(status) {
   if (status === "Pending") {
@@ -14,15 +14,56 @@ function generateRandomPercent(status) {
   return 15;
 }
 
-// ---> OPTIONAL CATEGORY FALLBACK IMAGES <---
-// Replace these paths with your local images inside "assets/images/" if desired
-const CATEGORY_IMAGES = {
-  "Roads": "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=700",       // e.g. "assets/images/pothole.jpg"
-  "Electricity": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=700", // e.g. "assets/images/streetlight.jpg"
-  "Sanitation": "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=700",  // e.g. "assets/images/garbage.jpg"
-  "Water Supply": "",
-  "Public Safety": "",
-  "Other": ""
+// Ordered list of local filenames + verified working web URLs
+const IMAGE_CANDIDATES_BY_CATEGORY = {
+  "Roads": [
+    "assets/images/pothole.jpg",
+    "assets/images/pothole.jpeg",
+    "assets/images/pothole.png",
+    "assets/images/pothole.webp",
+    "assets/images/pothole.jpg.jpg",
+    "assets/images/pothole.jpg.jpeg",
+    "assets/images/pothole.jpg.webp",
+    "assets/images/image_d52cb8.jpg",
+    "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=700"
+  ],
+  "Electricity": [
+    "assets/images/electricity.jpg",
+    "assets/images/electricity.jpeg",
+    "assets/images/electricity.png",
+    "assets/images/electricity.webp",
+    "assets/images/electricity.jpg.jpg",
+    "assets/images/electricity.jpg.jpeg",
+    "assets/images/electricity.jpg.webp",
+    "assets/images/image_d5293c.jpg",
+    "https://commons.wikimedia.org/wiki/Special:FilePath/2014-12-30_13_37_40_Leaning_utility_pole_and_street_light_at_Maple_Avenue_and_Patton_Drive_in_Ewing,_New_Jersey.JPG?width=800",
+    "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=700"
+  ],
+  "Sanitation": [
+    "assets/images/garbage.jpg",
+    "assets/images/garbage.jpeg",
+    "assets/images/garbage.png",
+    "assets/images/garbage.webp",
+    "assets/images/garbage.jpg.jpg",
+    "assets/images/garbage.jpg.jpeg",
+    "assets/images/garbage.jpg.webp",
+    "assets/images/image_d52fe6.jpg",
+    "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=700"
+  ],
+  "Water Supply": [
+    "assets/images/water.jpg",
+    "assets/images/pothole.jpg",
+    "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=700"
+  ],
+  "Public Safety": [
+    "assets/images/electricity.jpg",
+    "https://commons.wikimedia.org/wiki/Special:FilePath/2014-12-30_13_37_40_Leaning_utility_pole_and_street_light_at_Maple_Avenue_and_Patton_Drive_in_Ewing,_New_Jersey.JPG?width=800",
+    "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=700"
+  ],
+  "Other": [
+    "assets/images/pothole.jpg",
+    "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=700"
+  ]
 };
 
 // Active citizen account used when posting new comments (can be banned/unbanned via ID: USR-104)
@@ -42,8 +83,7 @@ const DUMMY_REPORTS = [
     lat: 12.9255,
     lng: 77.5468,
     reporterName: "Karthik R.",
-    // ---> ADD / REPLACE YOUR POTHOLE IMAGE PATH BELOW <---
-    imageUrl: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=700",
+    imageUrl: "assets/images/pothole.jpg",
     status: "Pending",
     progressPercent: 18,
     upvotes: 14,
@@ -79,8 +119,7 @@ const DUMMY_REPORTS = [
     lat: 12.9081,
     lng: 77.5856,
     reporterName: "Ananya S.",
-    // ---> ADD / REPLACE YOUR STREETLIGHT IMAGE PATH BELOW <---
-    imageUrl: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=700",
+    imageUrl: "assets/images/electricity.jpg",
     status: "In Progress",
     progressPercent: 62,
     upvotes: 19,
@@ -108,8 +147,7 @@ const DUMMY_REPORTS = [
     lat: 12.9299,
     lng: 77.5824,
     reporterName: "Rahul V.",
-    // ---> ADD / REPLACE YOUR GARBAGE IMAGE PATH BELOW <---
-    imageUrl: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=700",
+    imageUrl: "assets/images/garbage.jpg",
     status: "Resolved",
     progressPercent: 96,
     upvotes: 27,
@@ -140,6 +178,61 @@ function normalizeCategory(cat) {
   return map[cat] || cat || "Other";
 }
 
+// Pre-tests image candidates using offscreen Image() so template src="" never triggers a false error
+function attachGuaranteedImage(imgWrapEl, imgEl, report) {
+  if (!imgEl) return;
+
+  // Strip empty src="" from cloned template immediately
+  imgEl.removeAttribute("src");
+
+  const normalizedCat = normalizeCategory(report.category);
+  const defaultCandidates =
+    IMAGE_CANDIDATES_BY_CATEGORY[normalizedCat] || IMAGE_CANDIDATES_BY_CATEGORY["Other"];
+
+  const candidates = [];
+  if (
+    report.imageUrl &&
+    !report.imageUrl.includes("upload.wikimedia.org/wikipedia/commons/thumb/")
+  ) {
+    candidates.push(report.imageUrl);
+  }
+  defaultCandidates.forEach(src => {
+    if (!candidates.includes(src)) candidates.push(src);
+  });
+
+  if (imgWrapEl) {
+    imgWrapEl.removeAttribute("hidden");
+    imgWrapEl.hidden = false;
+    imgWrapEl.style.cssText =
+      "display: block !important; width: 100%; margin: 12px 0; border-radius: 12px; overflow: hidden; background: #f1f5f9;";
+  }
+
+  imgEl.removeAttribute("hidden");
+  imgEl.hidden = false;
+  imgEl.style.cssText =
+    "display: block !important; width: 100%; height: 220px; object-fit: cover; border-radius: 12px;";
+
+  let attemptIndex = 0;
+
+  function tryNextCandidate() {
+    if (attemptIndex >= candidates.length) return;
+    const testUrl = candidates[attemptIndex++];
+    const probe = new Image();
+
+    probe.onload = () => {
+      imgEl.src = testUrl;
+    };
+
+    probe.onerror = () => {
+      tryNextCandidate();
+    };
+
+    probe.src = testUrl;
+  }
+
+  tryNextCandidate();
+}
+
 function loadReports() {
   const saved = localStorage.getItem("civiceye_reports");
   if (saved) {
@@ -147,7 +240,11 @@ function loadReports() {
       const parsed = JSON.parse(saved);
       const updated = parsed.map((r, rIdx) => {
         const status = r.status || "Pending";
-        let pct = typeof r.progressPercent === "number" ? r.progressPercent : generateRandomPercent(status);
+        const normalizedCat = normalizeCategory(r.category);
+        let pct =
+          typeof r.progressPercent === "number"
+            ? r.progressPercent
+            : generateRandomPercent(status);
         if (status === "Pending" && (pct < 0 || pct > 30)) pct = generateRandomPercent("Pending");
         if (status === "In Progress" && (pct < 31 || pct > 85)) pct = generateRandomPercent("In Progress");
         if (status === "Resolved" && (pct < 85 || pct > 100)) pct = generateRandomPercent("Resolved");
@@ -162,11 +259,22 @@ function loadReports() {
           isBanned: Boolean(c.isBanned)
         }));
 
+        const primaryLocalPath =
+          (IMAGE_CANDIDATES_BY_CATEGORY[normalizedCat] &&
+            IMAGE_CANDIDATES_BY_CATEGORY[normalizedCat][0]) ||
+          "assets/images/pothole.jpg";
+
+        // Keep custom base64/uploaded photos from report.html, otherwise use primary local path
+        const hasCustomUpload =
+          r.imageUrl &&
+          r.imageUrl.startsWith("data:image/");
+
         return {
           ...r,
           status,
           progressPercent: pct,
-          category: normalizeCategory(r.category),
+          category: normalizedCat,
+          imageUrl: hasCustomUpload ? r.imageUrl : primaryLocalPath,
           isBanned: Boolean(r.isBanned),
           banReason: r.banReason || "",
           comments: normalizedComments
@@ -195,7 +303,6 @@ function saveUpvotedIds(ids) {
   localStorage.setItem("civiceye_upvoted_ids", JSON.stringify(ids));
 }
 
-// Banned User Accounts Storage: { "USR-104": { reason: "Spamming", bannedAt: "..." } }
 function getBannedAccounts() {
   const saved = localStorage.getItem("civiceye_banned_accounts");
   return saved ? JSON.parse(saved) : {};
@@ -225,7 +332,6 @@ const adminToggleBtn = document.getElementById("adminToggleBtn");
 const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
-// Admin Moderation Panel Elements
 const adminAccountModPanel = document.getElementById("adminAccountModPanel");
 const adminAccountIdInput = document.getElementById("adminAccountIdInput");
 const unbanAccountByIdBtn = document.getElementById("unbanAccountByIdBtn");
@@ -290,7 +396,6 @@ function getStatusMeta(report) {
   };
 }
 
-// Render the top Admin Account Moderation Panel
 function renderAdminAccountPanel() {
   if (!adminAccountModPanel || !bannedAccountsListEl) return;
 
@@ -332,7 +437,6 @@ function renderAdminAccountPanel() {
   });
 }
 
-// Admin Action: Ban a user account by Account ID
 function banUserAccount(accountId, defaultReason = "Abusive or spam comments") {
   if (!isAdminMode) return;
   const cleanId = (accountId || "").trim().toUpperCase();
@@ -345,7 +449,7 @@ function banUserAccount(accountId, defaultReason = "Abusive or spam comments") {
     `Enter Municipal Authority reason for banning Account ID [${cleanId}] from commenting:`,
     defaultReason
   );
-  if (reason === null) return; // Cancelled
+  if (reason === null) return;
 
   const finalReason = reason.trim() || "Violation of community comment policy";
   const bannedMap = getBannedAccounts();
@@ -360,7 +464,6 @@ function banUserAccount(accountId, defaultReason = "Abusive or spam comments") {
   alert(`Account ID [${cleanId}] has been banned from commenting.`);
 }
 
-// Admin Action: Unban a user account using their Account ID
 function unbanUserAccount(accountId) {
   if (!isAdminMode) return;
   const cleanId = (accountId || "").trim().toUpperCase();
@@ -382,7 +485,6 @@ function unbanUserAccount(accountId) {
   alert(`Account ID [${cleanId}] has been unbanned and can comment again.`);
 }
 
-// Admin Action: Ban / Unban a Report Issue Card (Requires Explanation to Ban)
 function toggleBanReportCard(reportId) {
   if (!isAdminMode) return;
   const report = reports.find(r => r.id === reportId);
@@ -392,7 +494,7 @@ function toggleBanReportCard(reportId) {
     const explanation = prompt(
       `Enter official Municipal Authority explanation for banning report "${report.title}" (Required):`
     );
-    if (explanation === null) return; // Cancelled
+    if (explanation === null) return;
     if (explanation.trim() === "") {
       alert("Action blocked: You must provide an explanation to ban a report card.");
       return;
@@ -540,7 +642,6 @@ function renderReports() {
   const selectedCategory = categoryFilter.value;
   const selectedStatus = statusFilter.value;
   const sortBy = sortSelect.value;
-  const bannedAccountsMap = getBannedAccounts();
 
   const filtered = reports
     .filter(r => {
@@ -624,13 +725,10 @@ function renderReports() {
       `${Number(report.lat || 12.9352).toFixed(4)}, ${Number(report.lng || 77.58).toFixed(4)}`;
     clone.querySelector(".location-text").textContent = locDisplay;
 
-    // Image (Uses report.imageUrl or fallback from CATEGORY_IMAGES)
+    // GUARANTEED IMAGE LOADER (Pre-tests via new Image() so src="" never races)
+    const imgWrapEl = clone.querySelector(".report-image-wrap");
     const imgEl = clone.querySelector(".report-image");
-    const resolvedImage = report.imageUrl || CATEGORY_IMAGES[normalizedCat] || "";
-    if (resolvedImage) {
-      imgEl.src = resolvedImage;
-      imgEl.hidden = false;
-    }
+    attachGuaranteedImage(imgWrapEl, imgEl, report);
 
     // Resolution Progress Bar
     clone.querySelector(".stage-label").textContent = statusMeta.stageText;
@@ -763,7 +861,6 @@ function renderReports() {
         })
         .join("");
 
-      // Attach Admin Comment Ban & Account Ban Listeners
       if (isAdminMode) {
         commentsList.querySelectorAll("[data-ban-comment-idx]").forEach(btn => {
           btn.addEventListener("click", () => {
@@ -876,7 +973,7 @@ sidebarLinks.forEach(btn => {
 
 adminToggleBtn.addEventListener("click", () => {
   if (!isAdminMode) {
-    const pin = prompt("Enter Municipal Admin Passcode :","****");
+    const pin = prompt("Enter Municipal Admin Passcode :", "****");
     if (pin === "1234") {
       isAdminMode = true;
       adminToggleBtn.textContent = "🔓 Admin: ON";
@@ -895,7 +992,6 @@ adminToggleBtn.addEventListener("click", () => {
   }
 });
 
-// Admin Account ID Unban / Ban Top Panel Buttons
 if (unbanAccountByIdBtn) {
   unbanAccountByIdBtn.addEventListener("click", () => {
     const targetId = adminAccountIdInput ? adminAccountIdInput.value : "";
