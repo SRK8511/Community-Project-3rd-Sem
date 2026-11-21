@@ -118,9 +118,11 @@ document.getElementById("selectMapLocation").addEventListener("click", () => {
   if (isHidden) {
     if (!pickerMap) {
       pickerMap = L.map("pickerMap").setView([currentLat, currentLng], 13);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+  {
         maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
+        attribution: "&Tiles &copy; Esri"
       }).addTo(pickerMap);
 
       pickerMarker = L.marker([currentLat, currentLng]).addTo(pickerMap);
